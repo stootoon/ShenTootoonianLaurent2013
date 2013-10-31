@@ -75,19 +75,16 @@ if (any(whichPanels == 1))  % Projection onto the PCA axes
   end
   text(coefSh(1,1), coefSh(2,1), coefSh(3,1), 'Rec. using shuff. KCs', 'Color',cols(numShufflesToPlot,:),'FontSize',12);
   
-  xtk = -4:2:2;
-  ytk = -1:3;
-  ztk = -4:0;
   set(gca,'fontsize',6,'xtick',xtk,'ytick',ytk,'ztick',ztk);
-  box off;
-  grid off;
   
   pcaView = load(fullfile(currDir, 'pcaView.mat'));
   view([pcaView.az pcaView.el]);
   axis tight;
 
-  % Plot custom grid (the MATLAB one sucks)
-  PlotCustom3DGrid(gca,{'Color',name2rgb('gray75'),'LineStyle','-','LineWidth',0.5},1)
+  grid on;
+  xlabel('PC1','FontSize',14);
+  ylabel('PC2','FontSize',14);
+  zlabel('PC3','FontSize',14);
 end
 
 if (any(whichPanels == 2))
