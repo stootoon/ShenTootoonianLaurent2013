@@ -112,7 +112,10 @@ xlim([t0 t1]-odorOnsetTime);
 VerticalLine(gca,0.0, 'LineStyle', '--', 'Color', [0.5 0.5 0.5]);
 VerticalLine(gca,0.5, 'LineStyle', '--', 'Color', [0.5 0.5 0.5]);
 set(gca,'yticklabel', []);
-set(legend([htop(1) hmed(1) hbot(1)],'Best PN Subs.','Med. PN Subs.', 'Worst PN Subs.', 'location','northeast'),'FontSize',10,'color','none','box','off');
+
+if (plotShuffles)
+  set(legend([htop(1) hmed(1) hbot(1)],'Best PN Subs.','Med. PN Subs.', 'Worst PN Subs.', 'location','northeast'),'FontSize',10,'color','none','box','off');
+end
 
 %% Category Decoding
 dataShortFile = fullfile(figDir, currDir, dataDir, 'dataForClassificationShort.mat');
