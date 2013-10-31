@@ -12,7 +12,7 @@ function success = install()
 success = false;
 %% Update INSTALL_ROOT in GetRootDir.m
 % Try to open 'GetRootDir'
-getRootDirFile = './code/common/GetRootDir.m';
+getRootDirFile = './GetRootDir.m';
 [fp, errMsg] = fopen(getRootDirFile, 'r');
 if (fp == -1)
   fprintf('Could not open "%s" for read: %s\n', getRootDirFile, errMsg);
