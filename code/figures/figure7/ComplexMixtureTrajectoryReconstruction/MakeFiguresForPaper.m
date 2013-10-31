@@ -75,8 +75,6 @@ if (any(whichPanels == 1))  % Projection onto the PCA axes
   end
   text(coefSh(1,1), coefSh(2,1), coefSh(3,1), 'Rec. using shuff. KCs', 'Color',cols(numShufflesToPlot,:),'FontSize',12);
   
-  set(gca,'fontsize',6,'xtick',xtk,'ytick',ytk,'ztick',ztk);
-  
   pcaView = load(fullfile(currDir, 'pcaView.mat'));
   view([pcaView.az pcaView.el]);
   axis tight;
