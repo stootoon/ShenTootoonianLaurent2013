@@ -25,7 +25,7 @@
 % ODORS: The directory containing information about the odors used.
 
 function rootDir = GetRootDir(whichRoot)
-installRoot = '/home/tootoonians/ShenTootoonianLaurent2013';
+installRoot = INSTALL_ROOT;
 
 if (nargin==0)
   whichRoot = 'install';
