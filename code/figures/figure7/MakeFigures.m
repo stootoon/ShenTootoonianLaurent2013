@@ -42,13 +42,13 @@ for i = 1:numel(whichPanels)
    case {'F', 'I'}
     fprintf('Figure 7%s is a schematic.\n', panel);
    case 'G'
-    MakeKcRec(1);
+    MakeKcRec(1, 'dataDir', dataDir);
    case 'H'
-    MakeKcRec(2);
+    MakeKcRec(2, 'dataDir', dataDir);
    case 'J'
-    MakePnRec(1);
+    MakePnRec(1, 'dataDir', dataDir);
    case 'K'    
-    MakePnRec(2);
+    MakePnRec(2, 'dataDir', dataDir);
    case 'SA'
     MakePnKcTimecourse();    
    otherwise
