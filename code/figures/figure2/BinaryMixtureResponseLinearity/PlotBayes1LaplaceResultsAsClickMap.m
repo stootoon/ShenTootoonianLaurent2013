@@ -237,7 +237,7 @@ sfigure(FindFigureCreate('Binary Mixture Responses ClickMap')); clf;
 set(gcf,'Resize','off');
 ResizeFigure(gcf,11,8.5,'inches');
 MAPPOINTTOCELLMIXTURE= @(pt,ind) ShowModelFitsBayes1Laplace(ind(round(pt(3))), round(pt(1)),...
-                                                  bestModel(ind(round(pt(3))),round(pt(1))), 'pnCbotDataFile',pnCbotDataFile, fitOptions{:});
+                                                  bestModel(ind(round(pt(3))),round(pt(1))), pnCbotDataFile, fitOptions{:});
 
 titles = {'Neither','Citral','Octanol','Mixture','Ambiguous'};
 Q = ComputeSubplotPositions(1,5,[],0.05,0.05,0.05,0.05,0.075,0.0);
