@@ -2,19 +2,18 @@ function ShowModelFitsBayes1Laplace(whichCell, whichMixture, whichModel, pnCbotD
 % ShowModelFitsBayes1Laplace(whichCell, whichMixture, whichModel, pnCbotDataFile, varargin)
 
 p = inputParser;
-p.addOptional('pnCbotDataFile', 'delayRegressData3');
 p.KeepUnmatched = true;
 p.parse(varargin{:});
 
 argsForFit = UnpackStructureFieldsAsNameValuePairs(p.Unmatched);
 
-Data = load(p.Results.pnCbotDataFile);
+Data = load(pnCbotDataFile);
 tall = Data.binStarts(Data.whichBinsAll);
 tfit = Data.binStarts(Data.whichBinsToFit);
 
 [mixtureInds, mixtureVals] = GetBinaryMixtureIndsForResponseLinearity();
 
-Fit = FitAllModelsForCellAndMixtureBayes1Laplace(whichCell, whichMixture, 'pnCbotDataFile', p.Results.pnCbotDataFile, argsForFit{:});
+Fit = FitAllModelsForCellAndMixtureBayes1Laplace(whichCell, whichMixture, 'pnCbotDataFile', pnCbotDataFile, argsForFit{:});
 
 bestModel = Fit.bestModel;
 if (bestModel ~= whichModel)

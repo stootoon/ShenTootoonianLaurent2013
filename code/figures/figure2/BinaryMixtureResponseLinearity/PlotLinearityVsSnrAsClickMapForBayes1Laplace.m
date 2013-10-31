@@ -98,7 +98,7 @@ nearestInd = nearestInd(pt(1),pt(3));
 cellInd    = cellFromInd(nearestInd);
 mixInd     = mixFromInd(nearestInd);
 fprintf('Clicked (%1.3f, %1.3f): cell %d, mixture %d.\n',pt(1),pt(3),cellInd, mixInd);
-ShowModelFitsBayes1Laplace(cellInd, mixInd, Results{cellInd, mixInd}.bestModel,'pnCbotDataFile',pnCbotDataFile, fitOptions{:});
+ShowModelFitsBayes1Laplace(cellInd, mixInd, Results{cellInd, mixInd}.bestModel,pnCbotDataFile, fitOptions{:});
 highlightCell(cellInd, mixInd);
 end
 
