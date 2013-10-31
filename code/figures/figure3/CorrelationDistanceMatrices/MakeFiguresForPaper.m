@@ -1,4 +1,4 @@
-function MakeFiguresForPaper(whichFigure)
+function MakeFiguresForPaper(whichFigure, varargin)
 % function MakeFiguresForPaper(whichFigure)
 %
 % Makes the correlation distance figures for the paper.
@@ -9,21 +9,28 @@ function MakeFiguresForPaper(whichFigure)
 % whichFigure = 5 => Mixture morph
 % whichFigure = 6 => Summary
 
-currDir = fileparts(mfilename('fullpath'));
+p = inputParser;
+p.addOptional('dataDir', 'originalData');
+p.parse(varargin{:});
+
+dataDir = p.Results.dataDir;
+figDir  = GetDataDirForFigure(3);
+currDir = GetCurrentDirFromPathString(fileparts(mfilename('fullpath')));
+sourceDir = fullfile(figDir, currDir, dataDir);
 
 switch whichFigure
  case 1 % Correlation distance for binary mixtures
-  plotBinaryMixtureCorrelationDistance(fullfile(currDir, 'corrDistResults1to1Mixture.mat'), 'Figure 3B: Correlation distance');
+  plotBinaryMixtureCorrelationDistance(fullfile(sourceDir, 'corrDistResults1to1Mixture.mat'), 'Figure 3B: Correlation distance');
  case 2
-  plotBinaryMixtureCorrelationDistanceSummary(fullfile(currDir, 'corrDistResults1to1Mixture.mat'), 'Figure 3C: Summary operation');
+  plotBinaryMixtureCorrelationDistanceSummary(fullfile(sourceDir, 'corrDistResults1to1Mixture.mat'), 'Figure 3C: Summary operation');
  case 3 % Correlation distance for binary mixtures concentration series
-  plotBinaryMixtureCorrelationDistance(fullfile(currDir, 'corrDistResultsConcentrationSeries.mat'),'Figure 3D: Concentration (correlation distances)');
+  plotBinaryMixtureCorrelationDistance(fullfile(sourceDir, 'corrDistResultsConcentrationSeries.mat'),'Figure 3D: Concentration (correlation distances)');
  case 4
-  plotBinaryMixtureCorrelationDistanceSummary(fullfile(currDir, 'corrDistResultsConcentrationSeries.mat'), 'Figure 3E: Concentration (summary)');
+  plotBinaryMixtureCorrelationDistanceSummary(fullfile(sourceDir, 'corrDistResultsConcentrationSeries.mat'), 'Figure 3E: Concentration (summary)');
  case 5 % Correlation distance for binary mixtures
-  plotBinaryMixtureCorrelationDistance(fullfile(currDir, 'corrDistResultsMixtureMorphs.mat'), 'Figure  3F: Odor morph (correlation distances)');
+  plotBinaryMixtureCorrelationDistance(fullfile(sourceDir, 'corrDistResultsMixtureMorphs.mat'), 'Figure  3F: Odor morph (correlation distances)');
  case 6
-  plotBinaryMixtureCorrelationDistanceSummary(fullfile(currDir, 'corrDistResultsMixtureMorphs.mat'), 'Figure  3F: Odor morph (summary)');
+  plotBinaryMixtureCorrelationDistanceSummary(fullfile(sourceDir, 'corrDistResultsMixtureMorphs.mat'), 'Figure  3F: Odor morph (summary)');
  otherwise
   error('Don''t know how to make figure %d.\n', whichFigure);
 end

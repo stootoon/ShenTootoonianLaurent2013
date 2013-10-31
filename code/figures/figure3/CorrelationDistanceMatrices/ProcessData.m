@@ -2,7 +2,13 @@ function ProcessData()
 % function ProcessData()
 
 binaryMixturePairs = [0 140; 140 140; 140 0];
-fileName = 'corrDistResults1to1Mixture.mat';
+
+figDir    = GetDataDirForFigure(3);
+currDir   = GetCurrentDirFromPathString(fileparts(mfilename('fullpath')));
+targetDir = fullfile(figDir, currDir, 'recomputedData');
+
+fileName = fullfile(targetDir, 'corrDistResults1to1Mixture.mat');
+
 startTime = tic;
 computeCorrelationDistancesForPairs(binaryMixturePairs, fileName);
 fprintf('Wrote "%s" in %1.3f seconds.\n', fileName, toc(startTime));
@@ -24,7 +30,8 @@ concentrationSeriesPairs = [0   30;
        100 0;
        120 0;
        140 0;];
-fileName = 'corrDistResultsConcentrationSeries.mat';
+
+fileName = fullfile(targetDir, 'corrDistResultsConcentrationSeries.mat');
 startTime = tic;
 computeCorrelationDistancesForPairs(concentrationSeriesPairs, fileName);
 fprintf('Wrote "%s" in %1.3f seconds.\n', fileName, toc(startTime));
