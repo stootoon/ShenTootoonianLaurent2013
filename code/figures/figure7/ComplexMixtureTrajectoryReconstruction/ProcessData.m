@@ -10,23 +10,19 @@ targetDir  = fullfile(figDir, currDir, 'recomputedData');
 numMpCores = 6;
 
 fprintf('Preparing datasets for fit...\n'); tic;
-% pnDataFile = PrepareDataForFits();
-pnDataFile = './recomputedData/data100_t2_1_to_3_1.mat';
+pnDataFile = PrepareDataForFits();
 fprintf('Wrote "%s".\nDone in %1.1f seconds.\n', pnDataFile, toc); % ~ 3 secs
 
 fprintf('Computing lasso weights...\n'); tic; 
-% lassoWeightsFile = ParComputeReconstructionWeightsUsingAdaptiveLasso(numMpCores, pnDataFile);
-lassoWeightsFile = './recomputedData/prunedWeightsAdaptiveLasso.mat';
+lassoWeightsFile = ParComputeReconstructionWeightsUsingAdaptiveLasso(numMpCores, pnDataFile);
 fprintf('Wrote "%s".\nDone in %1.1f seconds.\n', lassoWeightsFile, toc); % ~9000 seconds.
 
 fprintf('Computing lasso weights for shuffled KCs...\n'); tic; 
-% lassoWeightsShuffledKcsFile = ParComputeLassoWeightsForShuffledKcs(numMpCores, pnDataFile, lassoWeightsFile);
-lassoWeightsShuffledKcsFile = './recomputedData/lassoWeightsKcShuffle.mat';
+lassoWeightsShuffledKcsFile = ParComputeLassoWeightsForShuffledKcs(numMpCores, pnDataFile, lassoWeightsFile);
 fprintf('Wrote "%s".\nDone in %1.1f seconds.\n', lassoWeightsShuffledKcsFile, toc); % ~14000 seconds
 
 fprintf('Computing lasso weights for shuffled PNs...\n'); tic; 
-% lassoWeightsShuffledPnsFile = ParComputeLassoWeightsForShuffledPns(numMpCores, pnDataFile); % ~190000 seconds
-lassoWeightsShuffledPnsFile = './recomputedData/lassoWeightsPnShuffle.mat';
+lassoWeightsShuffledPnsFile = ParComputeLassoWeightsForShuffledPns(numMpCores, pnDataFile); % ~190000 seconds
 fprintf('Wrote "%s".\nDone in %1.1f seconds.\n', lassoWeightsShuffledPnsFile, toc); %
 
 fprintf('Computing data for reconstructions...\n'); tic;

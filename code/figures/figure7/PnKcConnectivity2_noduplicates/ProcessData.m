@@ -7,27 +7,23 @@ targetDir  = fullfile(figDir, currDir, 'recomputedData');
 numMpCores = 6;
 
 fprintf('Preparing datasets for fit...\n'); tic;
-% pnDataFile = PrepareDataForFits();
-pnDataFile = './recomputedData/data100_t2_1_to_3_1.mat';
+pnDataFile = PrepareDataForFits();
 fprintf('Wrote "%s".\nDone in %1.1f seconds.\n', pnDataFile, toc); % ~ 6 secs
 
 fprintf('Computing lasso weights...\n'); tic; 
-% lassoWeightsFile = ParComputePnToKcConnUsingAdaptiveLasso(numMpCores, pnDataFile); % ~270 seconds
-lassoWeightsFile = './recomputedData/prunedWeightsAdaptiveLasso.mat';
+lassoWeightsFile = ParComputePnToKcConnUsingAdaptiveLasso(numMpCores, pnDataFile); % ~270 seconds
 fprintf('Wrote "%s".\nDone in %1.1f seconds.\n', lassoWeightsFile, toc); % ~9000 seconds.
 
 fprintf('Computing lasso weights for shuffled KCs...\n'); tic; 
-% lassoWeightsShuffledKcsFile = ParComputeLassoWeightsForShuffledKcs(numMpCores, pnDataFile, lassoWeightsFile);
-lassoWeightsShuffledKcsFile = './recomputedData/lassoWeightsKcShuffle.mat';
+lassoWeightsShuffledKcsFile = ParComputeLassoWeightsForShuffledKcs(numMpCores, pnDataFile, lassoWeightsFile);
 fprintf('Wrote "%s".\nDone in %1.1f seconds.\n', lassoWeightsShuffledKcsFile, toc); % ~43000 seconds
 
 fprintf('Computing lasso weights for shuffled PNs...\n'); tic; 
-% lassoWeightsShuffledPnsFile = ParComputeLassoWeightsForShuffledPns(numMpCores, pnDataFile, lassoWeightsFile); % ~6540 seconds
-lassoWeightsShuffledPnsFile = './recomputedData/lassoWeightsPnShuffle.mat';
+lassoWeightsShuffledPnsFile = ParComputeLassoWeightsForShuffledPns(numMpCores, pnDataFile, lassoWeightsFile); % ~6540 seconds
 fprintf('Wrote "%s".\nDone in %1.1f seconds.\n', lassoWeightsShuffledPnsFile, toc); %
 
 fprintf('Computing data for reconstructions...\n'); tic;
-dataForKcRecFile = ComputeDataForKcReconstructions(pnDataFile, lassoWeightsFile, lassoWeightsShuffledPnsFile, lassoWeightsShuffledKcsFile); % ~14 secons
+dataForKcRecFile = ComputeDataForKcReconstructions(pnDataFile, lassoWeightsFile, lassoWeightsShuffledPnsFile, lassoWeightsShuffledKcsFile); % ~14 seconds
 fprintf('Wrote "%s".\nDone in %1.1f seconds.\n', dataForKcRecFile, toc);
 
 function outputFile = PrepareDataForFits()
@@ -215,7 +211,7 @@ B = weights.Results(:,1:174,1)';
 b0= weights.Results(:,175,1)';
 
 muB   = mean(B>0);
-muMuB = mean(muB(muB>0))*size(B,1)
+muMuB = mean(muB(muB>0))*size(B,1);
 sdMuB = std(muB(muB>0));
 seMuB = sdMuB/sqrt(sum(muB>0))*size(B,1);
 maxMuB = max(muB)*size(B,1);

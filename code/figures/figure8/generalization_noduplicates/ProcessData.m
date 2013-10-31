@@ -14,20 +14,17 @@ MatlabPoolWrapper('open', numMpCores);
 
 disp('Preparing data...');
 startTime = tic;
-% dataFile = PrepareDatasets(); % ~24.7 seconds
-dataFile = 'recomputedData/binnedSpikeTimes.mat';
+dataFile = PrepareDatasets(); % ~24.7 seconds
 fprintf('Wrote "%s" in %1.1f secs.\n', dataFile, toc(startTime));
 
 disp('Computer per-component categorization performance...');
 startTime = tic;
-% catResultsFile = ParComputePerComponentCategorizationResults(dataFile); % ~23000 secs
-catResultsFile = 'recomputedData/CatResults.mat';
+catResultsFile = ParComputePerComponentCategorizationResults(dataFile); % ~23000 secs
 fprintf('Wrote "%s" in %1.1f secs.\n', catResultsFile, toc(startTime));
 
 disp('Computer per-component generalization performance...');
 startTime = tic;
-% genResultsFile = ParComputePerComponentGeneralizationResults(dataFile); % ~3200 secs
-genResultsFile = 'recomputedData/GenResults.mat';
+genResultsFile = ParComputePerComponentGeneralizationResults(dataFile); % ~3200 secs
 fprintf('Wrote "%s" in %1.1f secs.\n', genResultsFile, toc(startTime));
 
 function outputFile = PrepareDatasets()

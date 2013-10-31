@@ -14,90 +14,76 @@ MatlabPoolWrapper('open', numMpCores);
 
 disp('Preparing data for classification...');
 startTime = tic;
-% outputFileName = PrepareData(0, 4.5, ''); % ~60 seconds
-dataFile = 'recomputedData/dataForClassification.mat';
+dataFile = PrepareData(0, 4.5, ''); % ~60 seconds
 fprintf('Wrote "%s" in %1.1f secs.\n', dataFile, toc(startTime));
 
 disp('Preparing data for classification (short)...');
 startTime = tic;
-% dataFileShort = PrepareData(1.9, 4.4, 'Short'); % ~60 seconds
-dataFileShort = 'recomputedData/dataForClassificationShort.mat';
+dataFileShort = PrepareData(1.9, 4.4, 'Short'); % ~60 seconds
 fprintf('Wrote "%s" in %1.1f secs.\n', dataFileShort, toc(startTime));
 
 disp('Generating PN shuffle Ids for categorization and generalization...');
 startTime = tic;
-% pnShuffleIdsFile = GeneratePnShuffleIds();
-pnShuffleIdsFile = 'recomputedData/pnShuffleIds.mat';
+pnShuffleIdsFile = GeneratePnShuffleIds();
 fprintf('Wrote "%s" in %1.1f secs.\n', pnShuffleIdsFile, toc(startTime));
 
 %% ***** Identity Decoding Performance **********
 disp('Computing identity decoding results...');
 startTime = tic;
-% identityDecodingFile = ComputeDataForIdentityDecoding();
-identityDecodingFile = 'recomputedData/dataIdentityDecoding.mat'; % 513.8 secs
+identityDecodingFile = ComputeDataForIdentityDecoding();
 fprintf('Wrote "%s" in %1.1f secs.\n', identityDecodingFile, toc(startTime));
 
 disp('Computing identity decoding results for top PNs...');
-aucResultsFile = fullfile(GetRootDir,'code','figures','figure6','PnKcAuc_noduplicates','originalData','Mfig_noduplicates.mat');
+aucResultsFile = fullfile(GetDataDirForFigure(6),'PnKcAuc_noduplicates','originalData','Mfig_noduplicates.mat');
 startTime = tic;
-% identityDecodingTopPnsFile = ComputeDataForIdentityDecodingTopPns(aucResultsFile); % 103.0 secs
-identityDecodingTopPnsFile = 'recomputedData/dataIdentityDecodingTopPns.mat';
+identityDecodingTopPnsFile = ComputeDataForIdentityDecodingTopPns(aucResultsFile); % 103.0 secs
 fprintf('Wrote "%s" in %1.1f secs.\n', identityDecodingTopPnsFile, toc(startTime));
 
 disp('Computing identity for random PNs...');
 startTime = tic;
-% identityDecodingRandomPnsFile = ParComputeIdentityDecodingResultsForRandomPns(dataFile); ~10268 secs
-identityDecodingRandomPnsFile = 'recomputedData/dataIdentityDecodingPnRandomShuffles.mat'; 
+identityDecodingRandomPnsFile = ParComputeIdentityDecodingResultsForRandomPns(dataFile); % ~10268 secs
 fprintf('Wrote "%s" in %1.1f secs.\n', identityDecodingRandomPnsFile, toc(startTime));
 
 %% ***** Categorization Performance *************
 disp('Computing categorization performance for PNs...');
 startTime = tic;
-% pnCatResultsFile = ParComputeCategorizationResultsForPns(dataFileShort); ~ 45 mins
-pnCatResultsFile = 'recomputedData/dataCategoryDecodingPns.mat'; 
+pnCatResultsFile = ParComputeCategorizationResultsForPns(dataFileShort); % ~ 45 mins
 fprintf('Wrote "%s" in %1.1f secs.\n', pnCatResultsFile, toc(startTime));
 
 disp('Computing categorization performance for KCs...');
 startTime = tic;
-% kcCatResultsFile = ParComputeCategorizationResultsForKcs(dataFileShort); % ~45 mins
-kcCatResultsFile = 'recomputedData/dataCategoryDecodingKcs.mat';
+kcCatResultsFile = ParComputeCategorizationResultsForKcs(dataFileShort); % ~45 mins
 fprintf('Wrote "%s" in %1.1f secs.\n', kcCatResultsFile, toc(startTime));
 
 disp('Computing categorization performance for top PNs...');
 startTime = tic;
-% pnCatResultsTopPnsFile = ParComputeCategorizationResultsForTopPns(dataFileShort, identityDecodingTopPnsFile); % ~45 mins
-pnCatResultsTopPnsFile = 'recomputedData/dataCategoryDecodingTopPns.mat';
+pnCatResultsTopPnsFile = ParComputeCategorizationResultsForTopPns(dataFileShort, identityDecodingTopPnsFile); % ~45 mins
 fprintf('Wrote "%s" in %1.1f secs.\n', pnCatResultsTopPnsFile, toc(startTime));
 
 disp('Computing categorization peformance for random PNs...');
 startTime = tic;
-% pnCatResultsRandomPnsFile = ParComputeCategorizationResultsForRandomPns(dataFileShort, pnShuffleIdsFile); % ~220000 seconds for 100 shuffles
-pnCatResultsRandomPnsFile = 'recomputedData/dataCategoryDecodingPnRandomShuffles.mat';
+pnCatResultsRandomPnsFile = ParComputeCategorizationResultsForRandomPns(dataFileShort, pnShuffleIdsFile); % ~220000 seconds for 100 shuffles
 fprintf('Wrote "%s" in %1.1f secs.\n', pnCatResultsRandomPnsFile, toc(startTime));
 
 %% ***** Generalization Performance *************
 disp('Computing generalization performance for PNs...');
 startTime = tic;
-% pnGenResultsFile = ParComputeGeneralizationResultsForPns(dataFileShort); % ~541 secs 
-pnGenResultsFile = 'recomputedData/dataGeneralizationDecodingPns.mat'; 
+pnGenResultsFile = ParComputeGeneralizationResultsForPns(dataFileShort); % ~541 secs 
 fprintf('Wrote "%s" in %1.1f secs.\n', pnGenResultsFile, toc(startTime));
 
 disp('Computing generalization performance for KCs...');
 startTime = tic;
-% kcGenResultsFile = ParComputeGeneralizationResultsForKcs(dataFileShort); % ~605 secs
-kcGenResultsFile = 'recomputedData/dataGeneralizationDecodingKcs.mat'; 
+kcGenResultsFile = ParComputeGeneralizationResultsForKcs(dataFileShort); % ~605 secs
 fprintf('Wrote "%s" in %1.1f secs.\n', kcGenResultsFile, toc(startTime));
 
 disp('Computing generalization performance for top PNs...');
 startTime = tic;
-% pnGenResultsTopPnsFile = ParComputeGeneralizationResultsForTopPns(dataFileShort, identityDecodingTopPnsFile); % ~400 secs
-pnGenResultsTopPnsFile = 'recomputedData/dataGeneralizationDecodingTopPns.mat'; 
+pnGenResultsTopPnsFile = ParComputeGeneralizationResultsForTopPns(dataFileShort, identityDecodingTopPnsFile); % ~400 secs
 fprintf('Wrote "%s" in %1.1f secs.\n', pnGenResultsTopPnsFile, toc(startTime));
 
 disp('Computing generalization peformance for random PNs...');
 startTime = tic;
-% pnGenResultsRandomPnsFile = ParComputeGeneralizationResultsForRandomPns(dataFileShort, pnShuffleIdsFile); % ~34000 seconds
-pnGenResultsRandomPnsFile = 'recomputedData/dataGeneralizationDecodingPnRandomShuffles.mat';
+pnGenResultsRandomPnsFile = ParComputeGeneralizationResultsForRandomPns(dataFileShort, pnShuffleIdsFile); % ~34000 seconds
 fprintf('Wrote "%s" in %1.1f secs.\n', pnGenResultsRandomPnsFile, toc(startTime));
 
 
@@ -254,7 +240,7 @@ numShuffles      = 1000;
 IpnSh            = IpnSh(1:numPnsPerShuffle,:);
 
 outputFile = fullfile(targetDir, 'pnShuffleIds.mat');
-save(outputFile, 'IpnSh', 'usablePns');
+save(outputFile, 'IpnSh');
 
 function outputFile = ParComputeCategorizationResultsForTopPns(dataFileShort, topPnsFile)
 global targetDir

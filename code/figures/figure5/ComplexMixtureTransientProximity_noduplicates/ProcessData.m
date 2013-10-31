@@ -14,7 +14,7 @@ responseWindow   = [1.5 5];
 
 fprintf('Computing metrics for transient proximity...\n'); tic;
 M = ComputeMetricsForTransientProximity_noduplicates(t0, binSize,responseWindow, whichComparisons, numBs);
-fprintf('Done in %1.1f.\n', toc);
+fprintf('Done in %1.1f seconds.\n', toc);
 
 outputFile = fullfile(targetDir, 'Mfig_noduplicates.mat');
 save(outputFile, 'M');
