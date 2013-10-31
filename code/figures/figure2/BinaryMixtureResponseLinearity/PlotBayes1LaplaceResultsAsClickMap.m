@@ -1,5 +1,5 @@
-function [colorMap, I] =  PlotBayes1LaplaceResultsAsClickMap(Results, varargin)
-%  [colorMap, I] = PlotResultsAsClickMap(ResultsNl, varargin)
+function [colorMap, I] =  PlotBayes1LaplaceResultsAsClickMap(Results, pnCbotDataFile, varargin)
+%  [colorMap, I] = PlotResultsAsClickMap(Results, pnCbotDataFile, varargin)
 %
 % Given the NUMCELLS x NUMMIXTURES array of Results structures
 % augmented with nonlinearity data (as returned by
@@ -14,7 +14,6 @@ function [colorMap, I] =  PlotBayes1LaplaceResultsAsClickMap(Results, varargin)
 
 p = inputParser;
 p.addOptional('pvals',[]);
-p.addOptional('pnCbotDataFile','delayRegressData3');
 p.addOptional('plotConcSeries',false);
 p.addOptional('fitOptions',{});
 p.addOptional('r2',[]);
@@ -28,7 +27,6 @@ snrDb = p.Results.snrDb;
 
 fitOptions = p.Results.fitOptions;
 pvals = p.Results.pvals;
-pnCbotDataFile = p.Results.pnCbotDataFile;
 plotConcSeries = p.Results.plotConcSeries;
 
 [mixtureInds, mixtureVals] = GetBinaryMixtureIndsForResponseLinearity;

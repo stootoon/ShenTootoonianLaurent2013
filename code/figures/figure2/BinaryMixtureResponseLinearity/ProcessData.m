@@ -22,7 +22,7 @@ fprintf('Wrote "%s" in %1.3f seconds.\n\n', colorMapResultsFile, toc(startTime))
 
 disp('Computing SNR Angle data...'); startTime = tic;
 snrAngleFile = ComputeSnrAngleData(modelFitResultsFile);
-fprintf('Wrote "%s" in %1.3f seconds.\n\n', toc(startTime));
+fprintf('Wrote "%s" in %1.3f seconds.\n\n', snrAngleFile, toc(startTime));
 
 function outputFileName = PrepareDataForRegression()
 global targetDir
@@ -160,7 +160,7 @@ e2 = reshape(e2, 168, []);
 snr= reshape(snr,168, []);
 
 disp('Plotting the clickmap...');
-[colorMaps, I] = PlotBayes1LaplaceResultsAsClickMap(Output.Results, 'pnCbotDataFile', Output.dataFile,'fitOptions',Output.fitOptions,'e2',e2,'r2',r2,'snrDb',10*log10(snr),'plotConcSeries',false);
+[colorMaps, I] = PlotBayes1LaplaceResultsAsClickMap(Output.Results, Output.dataFile,'fitOptions',Output.fitOptions,'e2',e2,'r2',r2,'snrDb',10*log10(snr),'plotConcSeries',false);
 
 outputFileName = fullfile(targetDir, 'dataForFigure');
 save(outputFileName, 'colorMaps', 'I');
