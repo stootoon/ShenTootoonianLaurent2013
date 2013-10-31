@@ -7,6 +7,7 @@ function MakeFiguresForPaper(whichPanels, varargin)
 p = inputParser;
 p.addOptional('dataDir', 'originalData');
 p.parse(varargin{:});
+
 dataDir = p.Results.dataDir;
 currDir = GetCurrentDirFromPathString(fileparts(mfilename('fullpath')));
 figDir  = GetDataDirForFigure(8);

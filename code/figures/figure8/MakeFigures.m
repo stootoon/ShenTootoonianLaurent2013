@@ -26,21 +26,25 @@ addpath([GetRootDir('figures'), '/figure8/generalization_noduplicates']);
 addpath([GetRootDir('figures'), '/figure8/classification_noduplicates']);
 
 %% Make the plots
+% The shuffles files are big and loading them takes a lot of time and
+% RAM. Set this to true if you want to plot them anyway!
+plotShuffles = false; 
+
 plottedPerformance = false;
 for i = 1:numel(whichPanels)
   panel = whichPanels{i};
   switch panel
    case {'A', 'B', 'C', 'SA'}
     if (~plottedPerformance)
-      MakeOverall();
+      MakeOverall('dataDir', dataDir, 'plotShuffles', plotShuffles);
       plottedPerformance = true;
     end
    case {'D', 'E','F','G','H','I'}
     fprintf('Panel 8%s is a schematic.\n', panel);
    case 'SB'
-    MakePerComp(1);
+    MakePerComp(1, 'dataDir', dataDir);
    case 'SC'
-    MakePerComp(2);
+    MakePerComp(2, 'dataDir', dataDir);
    otherwise
     error('Panel %d-%s does not exist.', whichFigure, panel);
   end
