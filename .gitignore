@@ -1,0 +1,5 @@
+GetRootDir.m
+*.mex*
+*.DS_Store
+*.log
+*CVS*
