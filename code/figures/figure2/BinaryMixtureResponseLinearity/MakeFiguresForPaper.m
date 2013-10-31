@@ -173,7 +173,7 @@ if (any(whichFigures==4))
   resultsFile = fullfile(figDir, thisDir, dataDir, 'resultsBestModel3Bayes1Laplace_slag100_sreg100_maxLag3_funcModelPrior.mat');
   Output = load(resultsFile);
   
-  pnDataFile = Output.dataFile;
+  pnDataFile = fullfile(figDir, thisDir, dataDir, 'delayRegressData.mat');
   
   whichCell = 128;
   whichMixture = [120 140];
