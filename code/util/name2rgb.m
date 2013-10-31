@@ -8,7 +8,7 @@ function rgb = name2rgb(name,varargin)
 % See also: COLORSWATCH.
 
 if (isempty(varargin))
-  colorCodesFile = 'colorCodes.mat';
+  colorCodesFile = fullfile(fileparts(mfilename('fullpath')), 'colorCodes.mat');
 else
   colorCodesFile = varargin{1};
 end
