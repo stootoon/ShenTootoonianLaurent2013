@@ -1,5 +1,5 @@
-function MakeFiguresForPaper(whichFigure)
-% function MakeFiguresForPaper(whichFigure)
+function MakeFiguresForPaper(whichFigure, varargin)
+% function MakeFiguresForPaper(whichFigure, varargin)
 % 
 % whichFigure=1,2  => Figure 5A: Single odors and summary
 % whichFigure=3,4  => Figure 5B: W-family and summary
@@ -7,28 +7,37 @@ function MakeFiguresForPaper(whichFigure)
 % whichFigure=7,8  => Figure 5-: Partial overlaps
 % whichFigure=9,10 => Figure 5E: Transient overlap.
 
-thisDir = fileparts(mfilename('fullpath'));
+p = inputParser;
+p.addOptional('dataDir', 'originalData');
+p.parse(varargin{:});
+
+dataDir = p.Results.dataDir;
+figDir  = GetDataDirForFigure(5);
+thisDir = GetCurrentDirFromPathString(fileparts(mfilename('fullpath')));
+
+sourceDir = fullfile(figDir, thisDir, dataDir);
+
 switch whichFigure
  case 1 % Correlation distance for single components.
-  plotBinaryMixtureCorrelationDistance(fullfile(thisDir, 'corrDistResultsSingleComponents.mat'), 'Figure 5A: Single odors');
+  plotBinaryMixtureCorrelationDistance(fullfile(sourceDir, 'corrDistResultsSingleComponents.mat'), 'Figure 5A: Single odors');
  case 2 % Summary
-  plotBinaryMixtureCorrelationDistanceSummary(fullfile(thisDir, 'corrDistResultsSingleComponents.mat'), 'Figure 5A: Single odors (summary)');
+  plotBinaryMixtureCorrelationDistanceSummary(fullfile(sourceDir, 'corrDistResultsSingleComponents.mat'), 'Figure 5A: Single odors (summary)');
  case 3 % Correlation distance for W series
-  plotBinaryMixtureCorrelationDistance(fullfile(thisDir, 'corrDistResultsWseries.mat'), 'Figure 5B: W-family');
+  plotBinaryMixtureCorrelationDistance(fullfile(sourceDir, 'corrDistResultsWseries.mat'), 'Figure 5B: W-family');
  case 4 % Summary 
-  plotBinaryMixtureCorrelationDistanceSummary(fullfile(thisDir, 'corrDistResultsWseries.mat'), 'Figure 5B: W-family (summary)');
+  plotBinaryMixtureCorrelationDistanceSummary(fullfile(sourceDir, 'corrDistResultsWseries.mat'), 'Figure 5B: W-family (summary)');
  case 5 % Correlation distance for A vs W series
-  plotBinaryMixtureCorrelationDistance(fullfile(thisDir, 'corrDistResultsWfamilyAfamily.mat'), 'Figure 5C: Two families');
+  plotBinaryMixtureCorrelationDistance(fullfile(sourceDir, 'corrDistResultsWfamilyAfamily.mat'), 'Figure 5C: Two families');
  case 6 % Summary
-  plotBinaryMixtureCorrelationDistanceSummary(fullfile(thisDir, 'corrDistResultsWfamilyAfamily.mat'), 'Figure 5C: Two families (summary)');
+  plotBinaryMixtureCorrelationDistanceSummary(fullfile(sourceDir, 'corrDistResultsWfamilyAfamily.mat'), 'Figure 5C: Two families (summary)');
  case 7 % Correlation distance for partial overlaps
-  plotBinaryMixtureCorrelationDistance(fullfile(thisDir, 'corrDistResultsPartialOverlaps.mat'), 'Figure 5-: Partial overlaps');
+  plotBinaryMixtureCorrelationDistance(fullfile(sourceDir, 'corrDistResultsPartialOverlaps.mat'), 'Figure 5-: Partial overlaps');
  case 8 % Summary
-  plotBinaryMixtureCorrelationDistanceSummary(fullfile(thisDir, 'corrDistResultsPartialOverlaps.mat'), 'Figure 5-: Partial overlaps (summary)');
+  plotBinaryMixtureCorrelationDistanceSummary(fullfile(sourceDir, 'corrDistResultsPartialOverlaps.mat'), 'Figure 5-: Partial overlaps (summary)');
  case 9 % Correlation distance for transient overlaps
-  plotBinaryMixtureCorrelationDistance(fullfile(thisDir, 'corrDistResultsTransientOverlaps.mat'), 'Figure 5E: Transient overlap ');
+  plotBinaryMixtureCorrelationDistance(fullfile(sourceDir, 'corrDistResultsTransientOverlaps.mat'), 'Figure 5E: Transient overlap ');
  case 10 % Summary
-  plotBinaryMixtureCorrelationDistanceSummary(fullfile(thisDir, 'corrDistResultsTransientOverlaps.mat'), 'Figure 5E: Transient overlap (summary)');
+  plotBinaryMixtureCorrelationDistanceSummary(fullfile(sourceDir, 'corrDistResultsTransientOverlaps.mat'), 'Figure 5E: Transient overlap (summary)');
  otherwise
   error('Don''t know how to make figure %d.\n', whichFigure);
 end
