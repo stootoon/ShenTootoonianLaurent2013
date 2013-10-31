@@ -1,9 +1,12 @@
 function ProcessData()
 % function ProcessData()
+whichFigure = 3;
 
-figDir     = GetDataDirForFigure(3);
+figDir     = GetDataDirForFigure(whichFigure);
 thisDir    = GetCurrentDirFromPathString(fileparts(mfilename('fullpath')));
 targetDir  = fullfile(figDir, thisDir, 'recomputedData');
+
+addpath(GetCodeDirForFigure(whichFigure)); % Add figure3 because it has ComputePafOverallAndPerBin
 
 t0             = 1;
 binSize        = 0.1;

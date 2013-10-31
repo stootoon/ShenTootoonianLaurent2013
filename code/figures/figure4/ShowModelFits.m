@@ -13,7 +13,12 @@ function ShowModelFits(whichCell, whichOdor, whichInputConfig, whichModel, pnCbo
 %
 % See also: FITALLMODELSFOROBSERVATION2LAPLACEGENERAL
 
-fitOptions = UnpackStructureFieldsAsNameValuePairs(varargin{:});
+fitOptions = inputParser;
+fitOptions.KeepUnmatched = true;
+fitOptions.parse(varargin{:});
+
+fitOptions = UnpackStructureFieldsAsNameValuePairs(fitOptions.Results);
+
 Data = load(pnCbotDataFile);
 whichBinsToFit = find(Data.iall==Data.ifit(1))+(0:numel(Data.ifit)-1);
 
@@ -33,7 +38,7 @@ end
 yobs = squeeze(Data.pnCbot(whichCell, :, whichOdor, :)); % Grab the mixture response
 
 % Now perform the fit.
-Fit = FitAllModelsForObservations2LaplaceGeneral(Xobs, yobs, 'whichBinsToFit', whichBinsToFit, fitOptions{:}, 'fitMode', 'single', 'whichInputConfig',whichInputConfig,'whichModel',whichModel)
+Fit = FitAllModelsForObservations2LaplaceGeneral(Xobs, yobs, 'whichBinsToFit', whichBinsToFit, fitOptions{:}, 'fitMode', 'single', 'whichInputConfig',whichInputConfig,'whichModel',whichModel);
 
 %% Plot the best fit
 sfigure(FindFigureCreate('Complex Mixture Fits: Best Fit'));
@@ -50,7 +55,7 @@ plot(Data.tall, mean(yobs,2), 'k','LineWidth',2);
 hold on;
 ye  = Fit.Model.test(Fit.Model.X);
 col = GetMixtureResponseLinearityColors(1);
-h   = plot(Data.tfit, ye,'Color', name2rgb('blue'), 'LineWidth',2)
+h   = plot(Data.tfit, ye,'Color', name2rgb('blue'), 'LineWidth',2);
 set(gca,'xticklabel',[]);
 ylim(ylims);
 

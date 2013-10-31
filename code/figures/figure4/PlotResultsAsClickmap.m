@@ -175,7 +175,6 @@ colorMaps{4} = reshape(cols,[],3);
 colorMapNames{4} = 'By R2';
 
 % Done with colormaps, now plot
-pnPlotOrder(1:10)
 maxColorModes = length(colorMaps);
 colorMode = 4;
 makeClickmap();
@@ -201,8 +200,8 @@ set(gcf,'Name',sprintf('Colormap %d: %s', colorMode, colorMapNames{colorMode}));
 end
 
 function mapPointToCellMixture(pt)
-whichCell = pnPlotOrder(round(pt(3)))
-whichOdor = round(pt(1))
+whichCell = pnPlotOrder(round(pt(3)));
+whichOdor = round(pt(1));
 whichInputConfig = Results{whichCell, whichOdor}{2};
 whichModel = Results{whichCell, whichOdor}{1};
 ShowModelFits(whichCell, whichOdor+12, whichInputConfig, whichModel, pnCbotDataFile, 'snrDb', snrDb(whichCell, whichOdor), fitOptions{:});

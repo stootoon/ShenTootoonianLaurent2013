@@ -1,11 +1,12 @@
 function ProcessData()
 % function ProcessData()
+whichFigure = 3;
 
-figDir    = GetDataDirForFigure(3);
+figDir    = GetDataDirForFigure(whichFigure);
 currDir   = GetCurrentDirFromPathString(fileparts(mfilename('fullpath')));
 targetDir = fullfile(figDir, currDir, 'recomputedData');
 
-addpath(fullfile(GetRootDir(),'code','figures','figure3'));
+addpath(GetCodeDirForFigure(whichFigure));
 
 numMpCores = 6;
 

@@ -15,38 +15,31 @@ binSize = 0.050;
 numMpCores = 6;
 
 fprintf('Preparing Cbot data file in (%d-%d) interval...\n', t0, t1); tic;
-% pnCbotDataFile     = PreparePnCbotDatasets(t0, t1,     binSize);
-pnCbotDataFile     = './recomputedData/pnComplexMixtures0_0to6_0_50ms.mat';
+pnCbotDataFile = PreparePnCbotDatasets(t0, t1,     binSize);
 fprintf('Done in %1.1f seconds.\n', toc);
 
 fprintf('Computing model fits...\n'); tic;
-% modelFitResultsFile = ParComputeBestModelLaplaceGeneral(numMpCores, pnCbotDataFile); % ~71000 secs
-modelFitResultsFile= './recomputedData/bestModelsForMixturesResults_allOdors_sigmaReg_1_0_sigmaLag_1_0_lagLimit_3_vAlpha_1_0_vBeta_1_0.mat';
+modelFitResultsFile = ParComputeBestModelLaplaceGeneral(numMpCores, pnCbotDataFile); % ~71000 secs
 fprintf('Done in %1.1f seconds.\n', toc);
 
 fprintf('Computing model stats...\n'); tic;
-% modelStatsFile     = ComputeModelStats(pnCbotDataFile, modelFitResultsFile); % ~130 seconds
-modelStatsFile     = './recomputedData/modelStats.mat';
+modelStatsFile     = ComputeModelStats(pnCbotDataFile, modelFitResultsFile); % ~130 seconds
 fprintf('Done in %1.1f seconds.\n', toc);
 
 fprintf('Preparing Cbot data file in (%d-%d) interval...\n', t0, t1long); tic;
-% pnCbotDataFileLong = PreparePnCbotDatasets(t0, t1long, binSize); % ~30 secs. Will need this for the SNR computations
-pnCbotDataFileLong = './recomputedData/pnComplexMixtures0_0to13_0_50ms.mat';
+pnCbotDataFileLong = PreparePnCbotDatasets(t0, t1long, binSize); % ~30 secs. Will need this for the SNR computations
 fprintf('Done in %1.1f seconds.\n', toc);
 
 fprintf('Computing data for figure...\n'); tic;
-% dataForFigureFile  = ComputeDataForFigure(modelFitResultsFile, pnCbotDataFileLong); % ~4.5 seconds
-dataForFigureFile  = './recomputedData/dataForFigure.mat';
+dataForFigureFile  = ComputeDataForFigure(modelFitResultsFile, pnCbotDataFileLong, pnCbotDataFile); % ~4.5 seconds
 fprintf('Done in %1.1f seconds.\n', toc);
 
 fprintf('Computing SNR angle data.\n'); tic;
-% snrAngleDataFile   = ComputeSnrAngleData(pnCbotDataFileLong, modelStatsFile, dataForFigureFile); % ~19.5 seconds
-snrAngleDataFile   = './recomputedData/snrAngleData.mat';
+snrAngleDataFile   = ComputeSnrAngleData(pnCbotDataFileLong, modelStatsFile, dataForFigureFile); % ~19.5 seconds
 fprintf('Done in %1.1f seconds.\n', toc);
 
 fprintf('Preparing Weight Ratio data.\n'); tic;
-% weightRatioDataFile= ComputeWeightRatioData(pnCbotDataFile, modelFitResultsFile, modelStatsFile, dataForFigureFile, pnCbotDataFileLong); % ~130 secs
-weightRatioData    = './recomputedData/weightRatioData.mat';
+weightRatioDataFile= ComputeWeightRatioData(pnCbotDataFile, modelFitResultsFile, modelStatsFile, dataForFigureFile, pnCbotDataFileLong); % ~130 secs
 fprintf('Done in %1.1f seconds.\n', toc);
 
 function outputFile = PreparePnCbotDatasets(t0, t1, binSize)
@@ -291,10 +284,10 @@ end
 outputFile = fullfile(targetDir, 'modelStats.mat');
 save(outputFile, 'ModelStats');
 
-function outputFile = ComputeDataForFigure(modelFitResultsFile, pnCbotDataFileLong)
+function outputFile = ComputeDataForFigure(modelFitResultsFile, pnCbotDataFileLong, pnCbotDataFile)
 global targetDir
 
-[colorMaps, colorMapNames, pnPlotOrder, I1, Imix, Iamb, Inull] = PlotResultsAsClickmap(modelFitResultsFile, pnCbotDataFileLong, 'randomize', false);
+[colorMaps, colorMapNames, pnPlotOrder, I1, Imix, Iamb, Inull] = PlotResultsAsClickmap(modelFitResultsFile, pnCbotDataFileLong, pnCbotDataFile);
 outputFile = fullfile(targetDir, 'dataForFigure.mat');
 save(outputFile, 'colorMaps', 'colorMapNames', 'pnPlotOrder', 'I1', 'Imix', 'Iamb', 'Inull');
 
