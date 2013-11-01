@@ -2,7 +2,6 @@
 
 This repository contains the code used to produce the figures in the article "*Encoding of Mixtures in a Simple Olfactory System*" by K. Shen, S. Tootoonian and G. Laurent, published in the journal *Neuron* in November 2013. The associated data, consisting of the raw spike times of the cells analyzed in the paper as well as the processed data used to produce the figures is also provided. The code was written almost entirely in MATLAB 2009b for Linux (Ubuntu) and tested on Linux (Ubuntu) and Mac OS X 10.6 (Snow Leopard). It should also run on Windows with minor modification.
 
----
 # Installation
 To install the code and data,
 
@@ -24,9 +23,9 @@ You can test the installation by checking the panels available for Figure 2, and
 		Plot several panels e.g. 'A','SB':	MakeFigures({'A','SB'}); 
 		Plot all panels:					MakeFigures('all');
 		>> MakeFigures('A');
+
 After a few seconds, a figure should popup with the rasters in Figure 2A-D. Success!
 
----
 # Folder Contents
 ## Code
 The code tree is rooted at `code`. It contains three folders:
@@ -49,7 +48,6 @@ The data tree is rooted at `data`. It also contains three folders:
 	1. `originalData`: Post-processed data as provided in this package and used to plot the panels in the paper.
 	2. `recomputedData`: Post-processed data recomputed by the the `ProcessData` functions. 
 
----
 # Datasets
 Spike times from two sets of experiments were analyzed in the paper and have been provided here.
 ## Spike Times
@@ -61,6 +59,7 @@ The spike times provided in `data/spt` are matrices in 'toc' (trials-odors-cells
 * Column RT+1 is the response of cell 2 to the first trial of odor 1,  
 
 and so on. Equivalently, if A is a 4-D matrix such that A(n,i,j,k) is the time of the n'th spike in the response in trial i of odor j of cell k, then 
+
 		Atoc = reshape(A, [], T * R *C);
 		A	 = reshape(Atoc, [], T, R, C);
 
@@ -68,6 +67,7 @@ The columns of the the toc matrices contain the actual spike times. If a cell pr
 
 ## Binary Mixtures
 In this set of experiments, the responses of 168 PNs to 10 trials of 27 mixtures of octanol and citral were recorded. Odor onset was at t = 2.0 seconds and the odor duration was 0.3 seconds. The function `GetBinaryMixturePairedConcentrations` returns the list of (octanol, citral) mixtures used, in the order they are stored in the spike times matrix. To get the PN spike times for this experiment, use:
+
 		>> pnSpt = LoadTocSpikeTimes('rawpn_binary_mixtures');
 
 ## Complex Mixtures
@@ -78,15 +78,17 @@ In this set of experiments, the responses of 174 PNs and 209 KCs to 7 trials to 
 
 Late in the analysis it was discovered that due to a spike-sorting error, one of the PNs in the data set (which actually contains 175 cells) was a duplicate. The affected analyses were rerun with this cell removed, hence the occasional '_noduplicates' suffix of some of the files and folders.
 
----
 # Basic Usage
 The aim of this package is to allow the user to reproduce the figures in the paper. Since most of the figures plot the results of computations performed on the raw spike times, the package also allows the user to reproduce these computations.
 ## Startup
 Always make sure to run the `startup` script in the **installation root** before running the rest of the code, as this adds necessary utility code folders to the path.
 ## Reproducing Figures
 To reproduce a figure, first `cd` to its code directory. For example, to plot some panels from Figure 3,
+
 		>> cd code/figures/figure3;
+
 You can list all the panels available for this figure by calling `MakeFigures` without any arguments:
+
 		>> MakeFigures;
 		Panels available for Figure 3: A B C D E F G H I SA SB SC SD 
 
@@ -94,22 +96,34 @@ You can list all the panels available for this figure by calling `MakeFigures` w
 		Plot one panel e.g. 'A':			MakeFigures('A'); 
 		Plot several panels e.g. 'A','SB':	MakeFigures({'A','SB'}); 
 		Plot all panels:					MakeFigures('all'); 
+
 We can then plot one of the panels, say 3G, the PAF w.r.t citral time course:
+
 		>> MakeFigures('G');
+
 Supplementary panels are prefixed with S. So to plot S3A, the PMF time course:
+
 		>> MakeFigures('SA');
+
 We can plot several panels at once by providing them as a cell array:
+
 		>> MakeFigures({'SA','G'});
+
 Or we can just plot all available panels:
+
 		>> MakeFigures('all');
+
 ## Reproducing Computations
 To reproduce the computations for a figure panel, first determine the associated subdirectory by using `GetFolderForPanel`. For example, for panel 3G:
+
 		>> GetFolderForPanel('3G');
+
 Then `cd` to that directory and run `ProcessData`. This will perform all the computations required for the panel, writing the results to the associated `recomputedData` folder in the data tree. The results of the computation can then be used to recreate the plot:
+
 		>> cd code/figures/figure3;
 		>> MakeFigures('G','dataDir','recomputedData'); 
 
----
+
 # Miscellaneous Notes
 ### LLE Figures
 Code to reproduce the LLE panels in Figures 3 and 5 will be provided shortly.
@@ -118,9 +132,7 @@ When viewing the reconstruction of PN trajectories by KCs in PCA space (Figure 7
 ### Figure 8
 Although data is provided to plot the classification performance of random PN subsets (the blue traces in Figure 8 and S8), the data files are very large and it may take a long time to load them when reproducing these figures. Hence by default, plotting their performance has been disabled. To enable it, set `plotShuffles` to `true` in `code/figures/figure8/MakeFigures.m`. 
 
----
 # Bugs/Feedback
 Please submit any bugs, documentation or feature requests to the [issues tracker](https://github.com/stootoon/ShenTootoonianLaurent2013/issues), or directly by email to <sina.tootoonian@gmail.com>. 
 
----
 # Downloads
