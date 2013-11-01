@@ -108,6 +108,7 @@ To reproduce the computations for a figure panel, first determine the associated
 Then `cd` to that directory and run `ProcessData`. This will perform all the computations required for the panel, writing the results to the associated `recomputedData` folder in the data tree. The results of the computation can then be used to recreate the plot:
 		>> cd code/figures/figure3;
 		>> MakeFigures('G','dataDir','recomputedData'); 
+
 ---
 # Miscellaneous Notes
 ### LLE Figures
