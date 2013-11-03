@@ -128,7 +128,7 @@ Then `cd` to that directory and run `ProcessData`. This will perform all the com
 ### LLE Figures
 Code to reproduce the LLE panels in Figures 3 and 5 will be provided shortly.
 ### Figure 7
-When viewing the reconstruction of PN trajectories by KCs in PCA space (Figure 7J), be sure to rotate the view to see the reconstruction more clearly. The default view is not very clear.
+When viewing the reconstruction of PN trajectories by KCs in PCA space (Figure 7J), be sure to rotate the view to see the reconstruction more clearly. The default view is sometimes not very clear.
 ### Figure 8
 Although data is provided to plot the classification performance of random PN subsets (the blue traces in Figure 8 and S8), the data files are very large and it may take a long time to load them when reproducing these figures. Hence by default, plotting their performance has been disabled. To enable it, set `plotShuffles` to `true` in `code/figures/figure8/MakeFigures.m`. 
 
