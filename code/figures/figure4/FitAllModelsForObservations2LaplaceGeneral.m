@@ -230,10 +230,10 @@ x = X(:,1:end-1)*whichInputs(:);
 numUsedRegressors   = sum(whichInputs(:));
 numUnusedRegressors = numel(whichInputs) - numUsedRegressors;
 
-lf = @(b0b1v) ...
+lf = @(b0b1v) ... % b0b1v(1) is the constant offset, 2 is the scaling factor, 3 is the variance
      -n/2*log(2*pi*b0b1v(3)) ... % Normalization constant for SSE
      -1/2/b0b1v(3)*sum((y-b0b1v(1)-b0b1v(2)*x).^2) ... % SSE
-     -log(2*pi*Context.sigmaReg^2) ... % Normalization constant for regression priors
+     -log(2*pi*Context.sigmaReg^2) ... % Normalization constant for regression priors. The constant offset contributes -0.5 log(..), as does the scaling factor => -log(...)
      -(b0b1v(1)^2+b0b1v(2)^2)/2/Context.sigmaReg^2 ... % Regression priors
      -(Context.variancePriorAlpha+1)*log(b0b1v(3))-Context.variancePriorBeta/b0b1v(3); % Inverse gamma prior (without the constant term)
 
@@ -270,7 +270,7 @@ r = sum(whichInputs);
 y = X(:,end);
 U = [ones(n,1) X(:, find(whichInputs))];
 
-lf = @(bv) ...
+lf = @(bv) ... % bv(1:end-1) = bv(1) is the constant offset, bv(2:end-1) are the other coefficients, bv(end) is the variance
      -n/2*log(2*pi*bv(r+2)) ... % Normalization constant for SSE
      -1/2/bv(r+2)*sum((y-U*bv(1:r+1)').^2) ... % SSE
      -(r+1)/2*log(2*pi*Context.sigmaReg^2) ... % Normalization constant for regression priors

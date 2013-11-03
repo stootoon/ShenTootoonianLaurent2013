@@ -1,19 +1,19 @@
 % function MakeFigures(varargin)
+% 
+% Makes the panels for Figure 3 and S3.
 %
-% Plots the panels in Figure 3 and S3. By default all panels will be
-% plotted. Specific panels can be specified using the 'whichPanels'
-% argument, provided with a cell array specifying the desired
-% panels. Each element of the cell array should be the letter for the
-% desired panel, prefixed by S if the panel is in the supplementary
-% material.
+% Usage:
 %
-% Examples:
+% List available panels:        MakeFigures();
+% Plot one panel e.g. A:        MakeFigures('A');
+% Plot multiple panels:         MakeFigures({'A','SA'});
+% Plot all panels:              MakeFigures('all');
 %
-% Plot all panels:
-% >> MakeFigures3();
+% If you've run ProcessData to recompute the data for the
+% figures, you can use its results by specifying 'dataDir':
 %
-% Plot panels 3G,H and S3D:
-% >> MakeFigures3('whichPanels',{'G',H','SD'});
+% Plot multiple panels, using the recomputed data: 
+% MakeFigures({'A','C'}, 'dataDir', 'recomputedData'); 
 
 function MakeFigures(varargin)
 whichFigure     = 3;

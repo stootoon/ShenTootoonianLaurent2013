@@ -1,6 +1,20 @@
 % function MakeFigures(varargin)
 % 
-% 
+% Makes the panels for Figure 2 and S2.
+%
+% Usage:
+%
+% List available panels:        MakeFigures();
+% Plot one panel e.g. A:        MakeFigures('A');
+% Plot multiple panels:         MakeFigures({'A','SA'});
+% Plot all panels:              MakeFigures('all');
+%
+% If you've run ProcessData to recompute the data for the
+% figures, you can use its results by specifying 'dataDir':
+%
+% Plot multiple panels, using the recomputed data: 
+% MakeFigures({'A','C'}, 'dataDir', 'recomputedData'); 
+
 function MakeFigures(varargin)
 whichFigure     = 2;
 availablePanels = {'A', 'B', 'C', 'D', 'E', 'F', 'SA', 'SB', 'SC', 'SD', 'SE', 'SF'};

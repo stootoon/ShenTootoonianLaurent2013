@@ -315,7 +315,7 @@ x = X(:,1:end-1)*whichInputs(:);
 lf = @(b0b1v) ... % b0b1v: Last value is the variance, first two values are the constant offset and the scaling value.
      -n/2*log(2*pi*b0b1v(3)) ... % Normalization constant for SSE
      -1/2/b0b1v(3)*sum((y-b0b1v(1)-b0b1v(2)*x).^2) ... % SSE
-     -log(2*pi*sigmaReg^2) ... % Normalization constant for regression priors
+     -log(2*pi*sigmaReg^2) ... % Normalization constant for regression priors. The constant offset contributes -0.5 log(..), as does the scaling factor => -log(...)
      -(b0b1v(1)^2+b0b1v(2)^2)/2/sigmaReg^2 ... % Regression priors
      -(variancePriorAlpha+1)*log(b0b1v(3))-variancePriorBeta/b0b1v(3); % Inverse gamma prior (without the constant term)
 
