@@ -50,7 +50,7 @@ for i = 1:numel(duplicates)
 end
 
 if (~isempty(removed))
-  fprintf('Removing duplicates: ');
+  fprintf('Removing duplicates PNs. IDs of PNs removed: ');
   fprintf('%d ', removed);
   fprintf('\n');
 else
