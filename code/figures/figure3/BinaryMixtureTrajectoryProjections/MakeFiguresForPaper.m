@@ -50,7 +50,8 @@ if (any(whichFigures==2))
   figId = 2;
   figName = ['Figure ' figPanels{figId} ': PMF time course'];
   X = Mfig.PMFpb(6,:,:);
-  doPlot(figId, figName, X,name2rgb('Gold'));
+  lgnd = {'cit140:oct140'};
+  doPlot(figId, figName, X, name2rgb('Gold'), lgnd);
   set(gca,'ytick',[0:0.25:1]);
   disp(sprintf('%s for the PMF for 1:1 mixture ([140 140], blue). Xtick = 1.5:0.5:5, Ytick = [0:0.25:1].', plotDescr));    
 end
@@ -64,8 +65,12 @@ if (any(whichFigures==3))
   disp(sprintf('%s for the PAF wrt octanol for mostly citral ([30 140], green), 1:1 ([140 140], yellow), mostly octanol ([140 30], red). Xtick = 1.5:0.5:5, Ytick = [0:0.25:1].', plotDescr));  
 end
 
-function doPlot(figId, figName, X, cols)
+function doPlot(figId, figName, X, cols, lgnd)
 global Mfig numBs numJk numBins t plotMode
+
+if (nargin == 4)
+  lgnd = {'cit140:oct30', 'cit140:oct140', 'cit30:oct140'};
+end
 
 sfigure(FindFigureCreate(figName)); clf; set(gcf,'Color',[1 1 1],'NumberTitle','off');
 ResizeFigure(gcf,2.3*4,2*4,'inches');
@@ -101,7 +106,7 @@ for i = 1:size(Y,1)
   Z = squeeze(Y(i,:,:));
   hl(i) = PlotMeanWithFilledCiBand(t, Z(:,2), Z(:,1), Z(:,3), cols(i,:), 1, cols(i,:),0.2);    
 end
-set(legend(hl, 'cit140:oct30', 'cit140:oct140', 'cit30:oct140'),'FontSize',14,'box','off');
+set(legend(hl, lgnd{:}),'FontSize',14,'box','off');
 set(gca,'xlim',[1.5 5], 'ylim',[0 1], 'ytick',[0:0.25:1],'xtick',0:0.5:5);
 set(gca,'xticklabel', arrayfun(@num2str, get(gca,'xtick')-2, 'UniformOutput', false));
 set(gca,'fontsize',12);
