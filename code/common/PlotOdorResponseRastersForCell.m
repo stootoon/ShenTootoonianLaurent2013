@@ -58,6 +58,8 @@ end
 if (opts.clearFigure)
   clf;
 end
+set(gcf,'Interruptible','off','BusyAction','cancel');
+
 ff = gcf;
 trialInd = 1;
 
@@ -77,7 +79,7 @@ for oCtr = 1:length(odorStrs)
   ax(oCtr) = subplot('Position', [plotLeft(oCtr), plotBottom(oCtr), plotWidth, plotHeight]);
 
   % Overlap/Gap patch
-  patchY = [0.25 numTrialsPerCond-0.2 numTrialsPerCond-0.2 0.25];
+  patchY = [0.2 numTrialsPerCond numTrialsPerCond 0.2];
   patchX = odorOnsetTime+[0 0 stimDur stimDur]; 
   transp = 0.2;
 

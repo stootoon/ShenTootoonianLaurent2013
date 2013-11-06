@@ -103,112 +103,120 @@ switch lower(cells)
 end
 
 if isequal(experiment, 'BinaryMixtures')
-  spt       = LoadTocSpikeTimes('rawpn_binary_mixtures');
-  numCells  = 168;
-  numTrials = 10;
-  numOdors  = 27;
-  odorDur   = 0.3;
-  figureTitle = 'PNs (binary mixtures)';
+  spt = LoadTocSpikeTimes('rawpn_binary_mixtures');
+  numCells = 168;
 else
-  numOdors  = 44;
-  numTrials = 7;
-  odorDur   = 0.5;
   if isequal(cells, 'PN')
     spt = LoadTocSpikeTimes('rawpn');
-    figureTitle = 'PNs (complex mixtures)';
     numCells = 174;
   else
     spt = LoadTocSpikeTimes('rawkc');
-    figureTitle = 'KCs (complex mixtures)';
     numCells = 209;
   end
 end
 
-if (startingCell<1 | startingCell > numCells)
+if (startingCell<1 || startingCell > numCells)
   error('Staring cell for this dataset must be in the range 1 - %d.\n', numCells);
 end
 
 % Now make the plots
-currentCell = startingCell
+currentCell = startingCell;
 if (isequal(experiment, 'BinaryMixtures'))
   spt      = ConvertSpikeTimesFromSparseToFull(spt);
   PlotBinaryMixturesOdorResponseRastersForCell(currentCell, spt, startTime+odorOnsetTime, endTime+odorOnsetTime, binSize, showRecs, [])
   figureId = gcf;
   userData = struct;
   userData.currentCell = currentCell;
-  userData.plotFunction = @(whichCell)  PlotBinaryMixturesOdorResponseRastersForCell(whichCell, spt, startTime+odorOnsetTime, endTime+odorOnsetTime, binSize, showRecs, figureId);
+  userData.plotFunction = @(whichCell) BinaryMixturesPlotFunction(whichCell, spt, odorOnsetTime, startTime, endTime, binSize, showRecs, figureId);
   set(figureId, 'UserData', userData,'KeyPressFcn', @BinaryMixturesKeyPressFcn);
 elseif (isequal(experiment, 'ComplexMixtures'))
 
   if (isequal(cells, 'PN'))
     spt      = ConvertSpikeTimesFromSparseToFull(spt);
-    sptCbot  = reshape(spt,[], numTrials, numOdors, numCells);    
   elseif (isequal(cells, 'KC'))
     spt      = ConvertSpikeTimesFromSparseToFull(spt);
-    sptCbot  = reshape(spt,[], numTrials, numOdors, numCells);        
   else
     error('Unknown cell type "%s".\n', cells);
   end
   
   figureName = sprintf('Complex Mixtures: %s %d', cells, currentCell);
   figureId = sfigure(FindFigureCreate(figureName));
-  PlotOdorResponseRastersForCell(spt, currentCell, [startTime endTime]+2, 'F', 'figureId', figureId);
-  set(figureId, 'NumberTitle','off','Name', figureName);
+  PlotOdorResponseRastersForCell(spt, currentCell, [startTime endTime]+2, 'F', 'figureId', figureId, 'spikeWidth', 2);
+  set(figureId, 'NumberTitle','off','Name', figureName,'Resize','off');
+  ResizeFigure(figureId, 14, 9,'inches');
 
   userData = struct;
   userData.currentCell  = currentCell;
   userData.numCells     = numCells;
-  userData.plotFunction = @(whichCell) ComplexMixturesPlotFunction(cells, spt, whichCell, startTime, endTime, figureId);
+  userData.plotFunction = @(whichCell) ComplexMixturesPlotFunction(cells, spt, whichCell, odorOnsetTime, startTime, endTime, figureId);
   set(figureId, 'UserData', userData, 'KeyPressFcn', @ComplexMixturesKeyPressFcn);
 else
   error('Unknown experiment "%s".', experiment);
 end
 
-function BinaryMixturesPlotFunction(whichCell, spt, startTime, endTime, binSize, showRecs, figureId)
-PlotBinaryMixturesOdorResponseRastersForCell(currentCell, spt, startTime+odorOnsetTime, endTime+odorOnsetTime, binSize, showRecs, figureId);
+function BinaryMixturesPlotFunction(whichCell, spt, odorOnsetTime, startTime, endTime, binSize, showRecs, figureId)
+PlotBinaryMixturesOdorResponseRastersForCell(whichCell, spt, startTime+odorOnsetTime, endTime+odorOnsetTime, binSize, showRecs, figureId);
 set(figureId, 'name', sprintf('Binary Mixtures: PN %d', whichCell), 'NumberTitle', 'off');
-
-function ComplexMixturesPlotFunction(cells, spt, whichCell, startTime, endTime, figureId)
-PlotOdorResponseRastersForCell(spt, whichCell, [startTime endTime]+2, 'F', 'figureId', figureId);
-set(figureId, 'name', sprintf('Complex Mixtures: %s %d', cells, whichCell));
-
-function ComplexMixturesKeyPressFcn(obj, evt)
-userData = get(obj,'UserData');
-currentCell = userData.currentCell;
-numCells    = userData.numCells;
-switch evt.Key
- case 'leftarrow'
-  currentCell = currentCell - 1;
-  if (currentCell < 1)
-    currentCell = numCells;
-  end
- case 'rightarrow'
-  currentCell = currentCell + 1;
-  if (currentCell > numCells)
-    currentCell = 1;
-  end  
- case 'return'
-end
-userData.currentCell = currentCell;
-userData.plotFunction(currentCell);
-set(obj, 'UserData', userData);
 
 function BinaryMixturesKeyPressFcn(obj, evt)
 userData = get(obj,'UserData');
 currentCell = userData.currentCell;
+refresh = false;
 switch evt.Key
  case 'leftarrow'
   currentCell = currentCell - 1;
   if (currentCell < 1)
     currentCell = 168;
   end
+  refresh = true;
  case 'rightarrow'
   currentCell = currentCell + 1;
   if (currentCell > 168)
     currentCell = 1;
   end  
+  refresh = true;
  case 'return'
 end
-userData.currentCell = currentCell;
-userData.plotFunction(currentCell);
-set(obj, 'UserData', userData);
+
+if (refresh)
+  userData.currentCell = currentCell;
+  fprintf('Plotting rasters for cell %d...', currentCell); drawnow;
+  userData.plotFunction(currentCell);
+  fprintf('done.\n');
+  set(obj, 'UserData', userData);
+end
+
+function ComplexMixturesPlotFunction(cells, spt, whichCell, odorOnsetTime, startTime, endTime, figureId)
+PlotOdorResponseRastersForCell(spt, whichCell, [startTime endTime]+odorOnsetTime, 'F', 'figureId', figureId, 'spikeWidth', 2);
+set(figureId, 'name', sprintf('Complex Mixtures: %s %d', cells, whichCell));
+
+function ComplexMixturesKeyPressFcn(obj, evt)
+userData = get(obj,'UserData');
+currentCell = userData.currentCell;
+numCells    = userData.numCells;
+refresh = false;
+
+switch evt.Key
+ case 'leftarrow'
+  currentCell = currentCell - 1;
+  if (currentCell < 1)
+    currentCell = numCells;
+  end
+  refresh = true;
+ case 'rightarrow'
+  currentCell = currentCell + 1;
+  if (currentCell > numCells)
+    currentCell = 1;
+  end  
+  refresh = true;
+ case 'return'
+end
+
+if (refresh)
+  userData.currentCell = currentCell;
+  fprintf('Plotting rasters for cell %d...', currentCell); drawnow;
+  userData.plotFunction(currentCell);
+  fprintf('done.\n');
+  set(obj, 'UserData', userData);
+end
+

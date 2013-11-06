@@ -40,15 +40,24 @@ whichConc = [140 80]; % Oct Cit
 concInd   = GetIndexForBinaryMixtureConcentrationPair(whichConc(1), whichConc(2));
 
 if (isempty(figureId))
-  figureId = figure(FindFigureCreate(sprintf('Binary Mixtures: PN %d', whichCell))); 
+  figureId = figure(FindFigureCreate(sprintf('Binary Mixtures: PN %d', whichCell)));
+  if (isempty(figureId))
+    error('Could not create new figure.');
+  end
 else
   figure(figureId);
 end
 
-clf;
+
+clf(figureId);
 set(figureId, 'Color',[1 1 1],'Resize','off','NumberTitle','off');
+
+% MATLAB sometimes crashes if it gets interrupted while plotting a
+% previous cell's raster, so make sure the figure is not interruptible.
+set(figureId, 'Interruptible','off','BusyAction','cancel'); 
+
 ResizeFigure(figureId, 14*10/13,10,'inches');
-set(figureId, 'name', sprintf('Binary Mixtures: PN %d', whichCell));
+set(figureId, 'name', sprintf('Binary Mixtures: PN %d (plotting)...', whichCell));
 
 % The citral concentrations to be used in each raster,
 % arranged according to their layout in the plot. NAN
@@ -91,10 +100,10 @@ for i = 1:numel(citConcs)
   row = mod(i-1,15)+1;
   col = floor((i-1)/15)+1;
   subplotInd = (row-1)*3+col;
+
   if (~isnan(citConcs(i)))
     concInd = GetIndexForBinaryMixtureConcentrationPair(octConcs(i), citConcs(i));
     plotSingleRasterInAxis(subplotp(Q,subplotInd), pnSptArr(:,:,concInd,whichCell), startTime, endTime, [octConcs(i) citConcs(i)]);
-
     % Add concentration labels as necessary
     switch(col)
      case 1
@@ -109,7 +118,7 @@ for i = 1:numel(citConcs)
       ylabel({sprintf('oct%d:', octConcs(i)), sprintf('cit%d',citConcs(i))},'FontSize', 9);
     end
   end
-  
+
   % Add titles as necessary
   switch col
     case 1
@@ -140,7 +149,7 @@ for i = 1:numel(citConcs)
       title('D   1:1 Mixture', 'FontSize', 12);
     end
   end
-  
+
 end
 
 % Plot the reconstructions at in the top right.
@@ -150,13 +159,14 @@ if (showRecs)
     col = 3;
     subplotInd = (row-1)*3 + col;
     ax = subplotp(Q,subplotInd);
-    plotReconstructionInAxis(subplotp(Q,subplotInd), spkCntsBot, startTime, endTime, whichReconcs(i,:), binSize);  
-    
+    plotReconstructionInAxis(subplotp(Q,subplotInd), spkCntsBot, startTime, endTime, whichReconcs(i,:), binSize);      
     octConc = whichReconcs(i,1);
     citConc = whichReconcs(i,2);
     ylabel({sprintf('oct%d:', octConc), sprintf('cit%d',citConc)},'FontSize', 9);
   end
 end
+
+set(figureId, 'name', sprintf('Binary Mixtures: PN %d', whichCell));
 
 function plotSingleRasterInAxis(ax,spt,t0,t1,octCitMix)
 if (any(isnan(octCitMix)))
@@ -167,7 +177,7 @@ octConc = octCitMix(1);
 citConc = octCitMix(2);
 
 set(gcf,'CurrentAxes',ax);
-patchColor = name2rgb('lavender');
+patchColor = [0.902 0.902 0.9804]; % lavender
 
 citralColor30 = [0.85 1.0 0.85];
 citralColor140= [0.0 1.0 0.0];
@@ -179,28 +189,42 @@ octanalColor = interp1([0;30;140], [1 1 1; octanalColor30; octanalColor140], oct
 citralColor  = interp1([0;30;140], [1 1 1;  citralColor30;  citralColor140], octCitMix(2));
 
 cla;
-patch([2 2.3 2.3 2],    [0.2 0.2 9.8 9.8],   patchColor, 'EdgeColor', 'none'); % The odor pach
+patch([2 2.3 2.3 2],    [0.25 0.25 10 10],   patchColor, 'EdgeColor', 'none'); % The odor pach
 
 % Spt has the spike times in its rows and the columns are trials. 
 % Add the columns as a complex number to make life easier for us.
+
 spt    = bsxfun(@plus, spt, (0:10-1)*sqrt(-1));
 spt    = spt(:);
-indVld = find(real(spt)>=t0+0.3 & real(spt)<=t1); 
+indVld = find(real(spt)>=t0+0.3 & real(spt)<=t1); % +0.3 to allow some space for the mixture indicator
 
 spikeTime = real(spt(indVld));
 spikeTrial= imag(spt(indVld));
 
-spikeWidth = 0.03;
+
 spikeHeight= 1;
 
-X = bsxfun(@plus, spikeTime, [0 1 1 0]*spikeWidth);
-Y = bsxfun(@plus, spikeTrial, [0 0 1 1]*spikeHeight);
+% Plot with lines instead of patches, looks better
+% spikeWidth = 0.03;
+% X = bsxfun(@plus, spikeTime, [0 1 1 0]*spikeWidth);
+% Y = bsxfun(@plus, spikeTrial, [0 0 1 1]*spikeHeight);
+% patch(X',Y',[0 0 0],'EdgeColor','none');
 
-patch(X',Y',[0 0 0],'EdgeColor','none');
+X = spikeTime(:)*[1 1 nan]; 
+Y = bsxfun(@plus, spikeTrial(:), [0 spikeHeight nan]);
+X = X';
+Y = Y';
+hold on;
+plot(X(:),Y(:),'k','LineWidth',2);
 patch([0.025 0.3 0.3 0.025]+t0, 5-0.95*[0 0 5 5]*citConc/140,    citralColor, 'EdgeColor', 'none');
 patch([0.025 0.3 0.3 0.025]+t0, 0.95*[0 0 5 5]*octConc/140+5,   octanalColor, 'EdgeColor', 'none');
 
-set(gca,'xtick',[-0.5:0.5:2.5]+2,'xticklabel',[],'ytick',[],'yticklabel',[],'ticklength',[0 0]);
+% Setup the xticks to span [t0 - t1]
+xt0 = when(t0<0, -ceil(abs(t0)/0.5), floor(t0/0.5));
+xt1 = when(t1<0, -ceil(abs(t1)/0.5), floor(t1/0.5));
+xtick = [xt0:xt1]*0.5;
+set(gca,'xtick', xtick, 'xticklabel',[],'ytick',[],'yticklabel',[],'ticklength',[0 0]);
+
 grid on;
 box on;
 xlim([t0,t1]);
@@ -234,7 +258,7 @@ set(gcf,'CurrentAxes',ax);
 cla;
 patchColor = name2rgb('lavender');
 ymax = 2.1;
-patch([2 2.3 2.3 2],    0.05+0.95*[0 0 1 1]*ymax, patchColor, 'EdgeColor', 'none'); hold on;
+patch([2 2.3 2.3 2],    0.0+0.975*[0 0 1 1]*ymax, patchColor, 'EdgeColor', 'none'); hold on;
 patch([0.025 0.3 0.3 0.025]+t0, ymax/2 + 0.95*[0 0 ymax ymax]/2*citConc/140,   citralColor, 'EdgeColor', 'none');
 patch([0.025 0.3 0.3 0.025]+t0, ymax/2 - 0.95*[0 0 1 1]*ymax/2*octConc/140,   octanalColor, 'EdgeColor', 'none');
 
@@ -243,9 +267,12 @@ set(area(t(t>t0+0.3), mixCnt(t>t0+0.3)),'EdgeColor','none','FaceColor', name2rgb
 hold on;
 plot(t(t>t0+0.3), recCnt(t>t0+0.3), 'Color','k');
 
-set(gca,'xtick',[-0.5:0.5:2.5]+2,'xticklabel',[],'ytick',[],'yticklabel',[],'ticklength',[0 0]);
+% Setup the xticks to span the xlim
+xt0 = when(t0<0, -ceil(abs(t0)/0.5), floor(t0/0.5));
+xt1 = when(t1<0, -ceil(abs(t1)/0.5), floor(t1/0.5));
+xtick = [xt0:xt1]*0.5;
+set(gca,'xtick',xtick,'xticklabel',[],'ytick',[],'yticklabel',[],'ticklength',[0 0]);
 grid on;
 box on;
 ylim([0 2.1]);
 xlim([t0 t1]);
-
