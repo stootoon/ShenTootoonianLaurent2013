@@ -9,7 +9,8 @@ startTime  = 1.2;   % Odor onset is at t = 2.0
 endTime    = 4.5;
 binSize    = 0.05;  % For the reconstructions
 showRecs   = true;
+spikeWidth = 1;
 
 pnSpt      = ConvertSpikeTimesFromSparseToFull(LoadTocSpikeTimes('rawpn_binary_mixtures'));
-PlotBinaryMixturesOdorResponseRastersForCell(whichCell, pnSpt, startTime, endTime, binSize, showRecs, []);
+PlotBinaryMixturesOdorResponseRastersForCell(whichCell, pnSpt, startTime, endTime, binSize, showRecs, [], spikeWidth);
 set(gcf, 'Name', 'Figure 2A-D: Example PN Binary Mixture Response Rasters'); 

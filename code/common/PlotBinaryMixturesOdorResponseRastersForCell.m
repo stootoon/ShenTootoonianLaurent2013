@@ -1,5 +1,5 @@
-function PlotBinaryMixturesOdorResponseRastersForCell(whichCell, pnSpt, startTime, endTime, binSize, showRecs, figureId)
-% PlotBinaryMixturesOdorResponseRastersForCell(whichCell, pnSpt, startTime, endTime, binSize, showRecs, figureId)
+function PlotBinaryMixturesOdorResponseRastersForCell(whichCell, pnSpt, startTime, endTime, binSize, showRecs, figureId, spikeWidth)
+% PlotBinaryMixturesOdorResponseRastersForCell(whichCell, pnSpt, startTime, endTime, binSize, showRecs, figureId, spikeWidth)
 %
 % Plots a series of rasters showing the response of the selected cell
 % to the binary mixtures presented in the binary mixtures experiments,
@@ -13,6 +13,7 @@ function PlotBinaryMixturesOdorResponseRastersForCell(whichCell, pnSpt, startTim
 % binSize:    The bin size to use for the reconstructions, in seconds.
 % showRecs:   True/false, whether to show the reconstructions.
 % figureId:   If not empty, a handle to the figure to plot in.
+% spikeWidth: The width of the plotted spikes.
 %
 % See also: SPIKETIMESBROWSER, MAKEBINARYMIXTURERASTEREXAMPLE.
 
@@ -103,7 +104,7 @@ for i = 1:numel(citConcs)
 
   if (~isnan(citConcs(i)))
     concInd = GetIndexForBinaryMixtureConcentrationPair(octConcs(i), citConcs(i));
-    plotSingleRasterInAxis(subplotp(Q,subplotInd), pnSptArr(:,:,concInd,whichCell), startTime, endTime, [octConcs(i) citConcs(i)]);
+    plotSingleRasterInAxis(subplotp(Q,subplotInd), pnSptArr(:,:,concInd,whichCell), startTime, endTime, [octConcs(i) citConcs(i)], spikeWidth);
     % Add concentration labels as necessary
     switch(col)
      case 1
@@ -168,7 +169,7 @@ end
 
 set(figureId, 'name', sprintf('Binary Mixtures: PN %d', whichCell));
 
-function plotSingleRasterInAxis(ax,spt,t0,t1,octCitMix)
+function plotSingleRasterInAxis(ax,spt,t0,t1,octCitMix, spikeWidth)
 if (any(isnan(octCitMix)))
   return;
 end
@@ -215,7 +216,7 @@ Y = bsxfun(@plus, spikeTrial(:), [0 spikeHeight nan]);
 X = X';
 Y = Y';
 hold on;
-plot(X(:),Y(:),'k','LineWidth',2);
+plot(X(:),Y(:),'k','LineWidth', spikeWidth);
 patch([0.025 0.3 0.3 0.025]+t0, 5-0.95*[0 0 5 5]*citConc/140,    citralColor, 'EdgeColor', 'none');
 patch([0.025 0.3 0.3 0.025]+t0, 0.95*[0 0 5 5]*octConc/140+5,   octanalColor, 'EdgeColor', 'none');
 

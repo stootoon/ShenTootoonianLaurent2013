@@ -32,6 +32,8 @@ function SpikeTimesBrowser(varargin)
 % showRecs [false]: Whether to show the reconstructions. This can be a
 % little time-consuming, so is off by default.
 %
+% spikeWidth [1]: The width of the spikes plotted in the rasters.
+%
 % EXAMPLES:
 %
 % Plot the PNs in the binary mixtures experiments:
@@ -60,6 +62,7 @@ p.addOptional('startTime', -1);
 p.addOptional('endTime',    3);
 p.addOptional('binSize', 0.050);
 p.addOptional('showRecs', false);
+p.addOptional('spikeWidth', 1);
 p.parse(varargin{:});
 
 experiment   = p.Results.experiment;
@@ -69,6 +72,7 @@ startTime    = p.Results.startTime;
 endTime      = p.Results.endTime;
 binSize      = p.Results.binSize;
 showRecs     = p.Results.showRecs;
+spikeWidth   = p.Results.spikeWidth;
 
 odorOnsetTime = 2;
 
@@ -123,11 +127,11 @@ end
 currentCell = startingCell;
 if (isequal(experiment, 'BinaryMixtures'))
   spt      = ConvertSpikeTimesFromSparseToFull(spt);
-  PlotBinaryMixturesOdorResponseRastersForCell(currentCell, spt, startTime+odorOnsetTime, endTime+odorOnsetTime, binSize, showRecs, [])
+  PlotBinaryMixturesOdorResponseRastersForCell(currentCell, spt, startTime+odorOnsetTime, endTime+odorOnsetTime, binSize, showRecs, [], spikeWidth)
   figureId = gcf;
   userData = struct;
   userData.currentCell = currentCell;
-  userData.plotFunction = @(whichCell) BinaryMixturesPlotFunction(whichCell, spt, odorOnsetTime, startTime, endTime, binSize, showRecs, figureId);
+  userData.plotFunction = @(whichCell) BinaryMixturesPlotFunction(whichCell, spt, odorOnsetTime, startTime, endTime, binSize, showRecs, figureId, spikeWidth);
   set(figureId, 'UserData', userData,'KeyPressFcn', @BinaryMixturesKeyPressFcn);
 elseif (isequal(experiment, 'ComplexMixtures'))
 
@@ -141,21 +145,21 @@ elseif (isequal(experiment, 'ComplexMixtures'))
   
   figureName = sprintf('Complex Mixtures: %s %d', cells, currentCell);
   figureId = sfigure(FindFigureCreate(figureName));
-  PlotOdorResponseRastersForCell(spt, currentCell, [startTime endTime]+2, 'F', 'figureId', figureId, 'spikeWidth', 2);
+  PlotOdorResponseRastersForCell(spt, currentCell, [startTime endTime]+2, 'F', 'figureId', figureId, 'spikeWidth', spikeWidth);
   set(figureId, 'NumberTitle','off','Name', figureName,'Resize','off');
   ResizeFigure(figureId, 14, 9,'inches');
 
   userData = struct;
   userData.currentCell  = currentCell;
   userData.numCells     = numCells;
-  userData.plotFunction = @(whichCell) ComplexMixturesPlotFunction(cells, spt, whichCell, odorOnsetTime, startTime, endTime, figureId);
+  userData.plotFunction = @(whichCell) ComplexMixturesPlotFunction(cells, spt, whichCell, odorOnsetTime, startTime, endTime, figureId, spikeWidth);
   set(figureId, 'UserData', userData, 'KeyPressFcn', @ComplexMixturesKeyPressFcn);
 else
   error('Unknown experiment "%s".', experiment);
 end
 
-function BinaryMixturesPlotFunction(whichCell, spt, odorOnsetTime, startTime, endTime, binSize, showRecs, figureId)
-PlotBinaryMixturesOdorResponseRastersForCell(whichCell, spt, startTime+odorOnsetTime, endTime+odorOnsetTime, binSize, showRecs, figureId);
+function BinaryMixturesPlotFunction(whichCell, spt, odorOnsetTime, startTime, endTime, binSize, showRecs, figureId, spikeWidth)
+PlotBinaryMixturesOdorResponseRastersForCell(whichCell, spt, startTime+odorOnsetTime, endTime+odorOnsetTime, binSize, showRecs, figureId, spikeWidth);
 set(figureId, 'name', sprintf('Binary Mixtures: PN %d', whichCell), 'NumberTitle', 'off');
 
 function BinaryMixturesKeyPressFcn(obj, evt)
@@ -186,8 +190,8 @@ if (refresh)
   set(obj, 'UserData', userData);
 end
 
-function ComplexMixturesPlotFunction(cells, spt, whichCell, odorOnsetTime, startTime, endTime, figureId)
-PlotOdorResponseRastersForCell(spt, whichCell, [startTime endTime]+odorOnsetTime, 'F', 'figureId', figureId, 'spikeWidth', 2);
+function ComplexMixturesPlotFunction(cells, spt, whichCell, odorOnsetTime, startTime, endTime, figureId, spikeWidth)
+PlotOdorResponseRastersForCell(spt, whichCell, [startTime endTime]+odorOnsetTime, 'F', 'figureId', figureId, 'spikeWidth', spikeWidth);
 set(figureId, 'name', sprintf('Complex Mixtures: %s %d', cells, whichCell));
 
 function ComplexMixturesKeyPressFcn(obj, evt)
