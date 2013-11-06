@@ -20,6 +20,7 @@ opts.addOptional('odorOnsetTime', 2);
 opts.addOptional('spikeColor',  [0 0 0]);
 opts.addOptional('spikeWidth',  1);
 opts.addOptional('clearFigure', true);
+opts.addOptional('figureId', []);
 opts.parse(varargin{:});
 
 opts = opts.Results;
@@ -50,6 +51,10 @@ plotHeight  = (1-2*vMargin - (nRows-1)*vSpacing)/nRows;
 plotLeft   = (iCols-1)*plotWidth+(iCols>1).*(iCols-1)*hSpacing + hMargin;
 plotBottom = 1 - vMargin - (iRows*plotHeight + (iRows>1).*(iRows-1)*vSpacing);
 
+if (~isempty(opts.figureId))
+  sfigure(opts.figureId);
+end
+
 if (opts.clearFigure)
   clf;
 end
@@ -57,7 +62,6 @@ ff = gcf;
 trialInd = 1;
 
 % Convert S to a cell array if necessary
-
 C = cell(1,numTrialsPerCond*numOdors);
 for i = 1:size(S,2)
   ind = find(S(:,i));
