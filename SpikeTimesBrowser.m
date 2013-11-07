@@ -4,9 +4,10 @@ function SpikeTimesBrowser(varargin)
 % Plots the spike times of single cells in the binary mixtures or
 % complex mixtures experiments as rasters. Binary mixtures rasters are
 % plotted as in Figure 2A-D, and complex mixtures rasters are plotted
-% as in Figure 6A. Once the figure has focus (by clicking on it), the
-% left and right arrow keys can be used to progress through the cells
-% in the dataset.
+% as in Figure 6A. 
+%
+% Once the figure has focus (by clicking on it), the left and right
+% arrow keys can be used to progress through the cells in the dataset.
 %
 % SpikeTimesBrowser() called with now arguments plots the PNs in the
 % binary mixture experiments. Other cells and settings can be

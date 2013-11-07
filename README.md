@@ -9,12 +9,13 @@ To install the code and data,
 2. Download the data from [this](https://dl.dropboxusercontent.com/u/5517909/ShenTootoonianLaurent2013Data.zip) link. It's ~800 MB, so it might take a while.
 3. Unpack the data file to yield a `data` folder.
 4. Move this folder into the **installation root**. It should now sit at the same level as the `code` folder.
-5. Start MATLAB, cd to the **installation root**, and run `install();` This script will set the root directory of the package and compile a mex file.
+5. Start MATLAB, cd to the **installation root**, and run `install();` This script will set the root directory of the package and compile a mex file. Note that if you start MATLAB in the **installation root** before running `install()`, MATLAB will run `startup` and will complain about INSTALL_ROOT. This warning can be safely ignored, and will disappear once `install()` has been run once.
+
 6. Run `startup();` This will add some code directories to the path.
 
 You can test the installation by checking the panels available for Figure 2, and plotting the raster in Figure 2A-D:
 
-		>> cd code/figures/figure2;
+    	>> cd code/figures/figure2;
 		>> MakeFigures;
 		Panels available for Figure 2: A B C D E F SA SB SC SD SE SF 
 
@@ -82,6 +83,29 @@ Late in the analysis it was discovered that due to a spike-sorting error, one of
 The aim of this package is to allow the user to reproduce the figures in the paper. Since most of the figures plot the results of computations performed on the raw spike times, the package also allows the user to reproduce these computations.
 ## Startup
 Always make sure to run the `startup` script in the **installation root** before running the rest of the code, as this adds necessary utility code folders to the path.
+## Browsing Spike Times
+The `SpikeTimesBrowser` has been provided to allow easy browsing of the spike times provided. Some typical usage examples are shown below; see the function documentation for more details.
+
+        >> SpikeTimesBrowser();
+
+This will plot the raster showing the response of PN 1 in the binary mixtures experiments, in the format of Figure 2A-D. The left and right arrowkeys will show the rasters for previous and subsequent PNs, respectively.
+
+        >> SpikeTimesBrowser('startingCell', 128, 'showRecs', true);
+
+This will reproduce Figure 2A-D, by plotting the raster for PN 128, and showing the reconstructions of its PSTH using linear summation of the component responses.
+
+        >> SpikeTimesBrowser('experiment', 'ComplexMixtures');
+        
+This will plot the raster for the first PN in the complex mixtures experiments, in the format of Figure 6A-B.
+
+        >> SpikeTimesBrowser('experiment', 'ComplexMixtures', 'cells', 'KCs');
+
+This will plot the raster for the first KC in the complex mixtures experiments.
+
+        >> SpikeTimesBrowser('experiment', 'ComplexMixtures', 'cells', 'KCs', 'startingCell', 155, 'startTime', -0.3, 'endTime', 2.2);
+
+This will reproduce the raster in Figure 6B.
+
 ## Reproducing Figures
 To reproduce a figure, first `cd` to its code directory. For example, to plot some panels from Figure 3,
 
