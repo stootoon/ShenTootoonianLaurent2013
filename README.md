@@ -1,6 +1,6 @@
 # Introduction
 
-This repository contains the code used to produce the figures in the article "*Encoding of Mixtures in a Simple Olfactory System*" by K. Shen, S. Tootoonian and G. Laurent, published in the journal *Neuron* in November 2013. The associated data, consisting of the raw spike times of the cells analyzed in the paper as well as the processed data used to produce the figures is also provided. The code was written almost entirely in MATLAB 2009b for Linux (Ubuntu) and tested on Linux (Ubuntu) and Mac OS X 10.6 (Snow Leopard). It should also run on Windows with minor modification.
+This repository contains the code used to produce the figures in [Shen et al., "_Encoding of Mixtures in a Simple Olfactory System_," Neuron (2013)](http://www.sciencedirect.com/science/article/pii/S0896627313007605). The associated data, consisting of the raw spike times of the cells analyzed in the paper as well as the processed data used to produce the figures is also provided. The code was written almost entirely in MATLAB 2009b for Linux (Ubuntu) and tested on Linux (Ubuntu) and Mac OS X 10.6 (Snow Leopard). It should also run on Windows with minor modification.
 
 # Installation
 To install the code and data,
