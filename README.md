@@ -162,4 +162,4 @@ Please submit any bugs, documentation or feature requests to the [issues tracker
 # Downloads
 * ShenTootoonianLaurent2013Code [v0.91](https://www.dropbox.com/s/vuby3xf5302im8s/ShenTootoonianLaurent2013Code_v0.91.zip?dl=0): Added more documentation, and `SpikeTimesBrowser`.
 * ShenTootoonianLaurent2013Code [ v0.9](https://www.dropbox.com/s/y2crhjqxm0ayeol/ShenTootoonianLaurent2013Code_v0.9.zip?dl=0): Initial public release.
-* [Data](https://www.dropbox.com/s/1fa3d5mxiiq26em/ShenTootoonianLaurent2013Data.zip?dl=0)
+* [Data](https://www.dropbox.com/s/kaxmcu7wjog6ye3/ShenTootoonianLaurent2013Data.zip?dl=0)
