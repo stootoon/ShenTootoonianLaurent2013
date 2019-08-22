@@ -150,7 +150,7 @@ Then `cd` to that directory and run `ProcessData`. This will perform all the com
 
 # Miscellaneous Notes
 ### LLE Figures
-Code to reproduce the LLE panels in Figures 3 and 5 will be provided shortly.
+Code to reproduce the LLE panels in Figures 3 and 5 is not provided.
 ### Figure 7
 When viewing the reconstruction of PN trajectories by KCs in PCA space (Figure 7J), be sure to rotate the view to see the reconstruction more clearly. The default view is sometimes not very clear.
 ### Figure 8
