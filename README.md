@@ -5,8 +5,8 @@ This repository contains the code used to produce the figures in [Shen et al., "
 # Installation
 To install the code and data,
 
-1. Download the code repository from [this](https://www.dropbox.com/s/vuby3xf5302im8s/ShenTootoonianLaurent2013Code_v0.91.zip?dl=0) link and unpack it. The top-level of the unpacked repository should contain a `code` folder, a few `.m` files and `README.md`. This will be the **installation root**.
-2. Download the data from [this](https://www.dropbox.com/s/kaxmcu7wjog6ye3/ShenTootoonianLaurent2013Data.zip?dl=0) link. It's ~800 MB, so it might take a while.
+1. Download the code repository from [this](https://public.brain.mpg.de/Laurent/ShenTootoonianLaurent2013/code.zip) link and unpack it. The top-level of the unpacked repository should contain a `code` folder, a few `.m` files and `README.md`. This will be the **installation root**.
+2. Download the data from [this](https://public.brain.mpg.de/Laurent/ShenTootoonianLaurent2013/data.zip) link. It's ~800 MB, so it might take a while.
 3. Unpack the data file to yield a `data` folder.
 4. Move this folder into the **installation root**. It should now sit at the same level as the `code` folder.
 5. Start MATLAB, cd to the **installation root**, and run `install();` This script will set the root directory of the package and compile a mex file. Note that if you start MATLAB in the **installation root** before running `install()`, MATLAB will run `startup` and will complain about INSTALL_ROOT. This warning can be safely ignored, and will disappear once `install()` has been run once.
@@ -160,6 +160,5 @@ Although data is provided to plot the classification performance of random PN su
 Please submit any bugs, documentation or feature requests to the [issues tracker](https://github.com/stootoon/ShenTootoonianLaurent2013/issues), or directly by email to <sina.tootoonian@gmail.com>. 
 
 # Downloads
-* ShenTootoonianLaurent2013Code [v0.91](https://www.dropbox.com/s/vuby3xf5302im8s/ShenTootoonianLaurent2013Code_v0.91.zip?dl=0): Added more documentation, and `SpikeTimesBrowser`.
-* ShenTootoonianLaurent2013Code [ v0.9](https://www.dropbox.com/s/y2crhjqxm0ayeol/ShenTootoonianLaurent2013Code_v0.9.zip?dl=0): Initial public release.
-* [Data](https://www.dropbox.com/s/kaxmcu7wjog6ye3/ShenTootoonianLaurent2013Data.zip?dl=0)
+* [Code](https://public.brain.mpg.de/Laurent/ShenTootoonianLaurent2013/code.zip)
+* [Data](https://public.brain.mpg.de/Laurent/ShenTootoonianLaurent2013/data.zip)
