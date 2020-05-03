@@ -74,8 +74,8 @@ In this set of experiments, the responses of 168 PNs to 10 trials of 27 mixtures
 ## Complex Mixtures
 In this set of experiments, the responses of 174 PNs and 209 KCs to 7 trials to 8 monomolecular odors and their mixtures was recorded, for a total of 44 odors tested. Odor onset was at t = 2.0 seconds and the odor duration was 0.5 seconds. The function `GetOdorsList` returns the list of mixtures used in the order they are stored in the spike times matrices. To get the spike times for this experiment, use:
 
-		>> pnSpt = LoadTocSpikeTimes('rawpns');
-		>> kcSpt = LoadTocSpikeTimes('rawkcs');
+		>> pnSpt = LoadTocSpikeTimes('rawpn');
+		>> kcSpt = LoadTocSpikeTimes('rawkc');
 
 Late in the analysis it was discovered that due to a spike-sorting error, one of the PNs in the data set (which actually contains 175 cells) was a duplicate. The affected analyses were rerun with this cell removed, hence the occasional '_noduplicates' suffix of some of the files and folders.
 
